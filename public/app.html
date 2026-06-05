@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusWallet — App</title>
+  <link rel="stylesheet" href="css/base.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .welcome {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+    .sub {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+    button {
+      padding: 10px 24px;
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    button:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <span style="font-size:3rem">💳</span>
+  <p class="welcome" id="welcome-msg">Loading...</p>
+  <p class="sub">CampusWallet is running. Dashboard coming in Phase 2.</p>
+  <button onclick="logout()">Logout</button>
+
+  <script>
+    // Check session and display username
+    (async function() {
+      const res  = await fetch('/api/auth/me');
+      const data = await res.json();
+      if (!data.loggedIn) {
+        window.location.href = '/index.html';
+        return;
+      }
+      document.getElementById('welcome-msg').textContent =
+        `Welcome, ${data.fullName} 👋`;
+    })();
+
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/index.html';
+    }
+  </script>
+</body>
+</html>

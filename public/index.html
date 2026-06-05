@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusWallet</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="auth-page">
+
+  <div class="auth-container">
+
+    <div class="auth-logo">
+      <span class="auth-logo-icon">💳</span>
+      <h1>CampusWallet</h1>
+      <p>Your campus finance tracker</p>
+    </div>
+
+    <!-- TAB SWITCHER -->
+    <div class="auth-tabs">
+      <button class="tab-btn active" id="tab-login"
+              onclick="showTab('login')">Login</button>
+      <button class="tab-btn" id="tab-register"
+              onclick="showTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form class="auth-form active" id="form-login"
+          onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label for="login-username">Username or Email</label>
+        <input type="text" id="login-username"
+               placeholder="Enter your username or email" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password"
+               placeholder="Enter your password" required>
+      </div>
+      <p class="form-error" id="login-error"></p>
+      <button type="submit" class="btn-primary" id="login-btn">
+        Login
+      </button>
+    </form>
+
+    <!-- REGISTER FORM -->
+    <form class="auth-form" id="form-register"
+          onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label for="reg-name">Full Name</label>
+        <input type="text" id="reg-name"
+               placeholder="Your full name" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="reg-username">Username</label>
+          <input type="text" id="reg-username"
+                 placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+          <label for="reg-year">Year of Study</label>
+          <select id="reg-year">
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3" selected>Year 3</option>
+            <option value="4">Year 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email"
+               placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password"
+               placeholder="At least 6 characters" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-university">University</label>
+        <input type="text" id="reg-university"
+               placeholder="e.g. Egerton University">
+      </div>
+      <div class="form-group">
+        <label for="reg-course">Course</label>
+        <input type="text" id="reg-course"
+               placeholder="e.g. BSc Computer Science">
+      </div>
+      <p class="form-error" id="reg-error"></p>
+      <button type="submit" class="btn-primary" id="reg-btn">
+        Create Account
+      </button>
+    </form>
+
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* css/base.css
+   ─────────────────────────────────────────────────────────────
+   CSS custom properties (variables) and global resets.
+
+   WHY VARIABLES?
+   Defining colours and spacing as variables means you change
+   one line and it updates everywhere. --color-primary changes
+   the blue across the entire app instantly.
+   This is the same concept as constants in JavaScript.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Colours */
+  --color-bg:          #0B1120;
+  --color-surface:     #1E293B;
+  --color-surface-2:   #0F172A;
+  --color-border:      #334155;
+  --color-text:        #F1F5F9;
+  --color-text-muted:  #94A3B8;
+  --color-primary:     #2563EB;
+  --color-primary-hover: #1D4ED8;
+  --color-accent:      #38BDF8;
+  --color-success:     #22C55E;
+  --color-warning:     #F59E0B;
+  --color-danger:      #EF4444;
+
+  /* Spacing */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+
+  /* Border radius */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+
+  /* Typography */
+  --font-main:  'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', monospace;
+  --text-sm:    0.85rem;
+  --text-base:  0.95rem;
+  --text-lg:    1.1rem;
+  --text-xl:    1.4rem;
+  --text-2xl:   1.8rem;
+}
+
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-main);
+}
+
+input, select, textarea {
+  font-family: var(--font-main);
+  font-size: var(--text-base);
+}
+
+/* Utility classes */
+.text-muted   { color: var(--color-text-muted); }
+.text-success { color: var(--color-success); }
+.text-danger  { color: var(--color-danger); }
+.text-warning { color: var(--color-warning); }
+.text-accent  { color: var(--color-accent); }
+.hidden       { display: none !important; }

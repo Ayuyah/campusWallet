@@ -27,7 +27,6 @@ const pool = mysql.createPool({
   connectionLimit:    10,
   queueLimit:         0,
   charset:            'utf8mb4',
-  socketPath:         '/var/run/mysqld/mysqld.sock',
 });
 
 // Test the connection immediately when this file is first loaded.
