@@ -3,61 +3,252 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusWallet — App</title>
+  <title>CampusWallet</title>
   <link rel="stylesheet" href="css/base.css">
-  <style>
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .welcome {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--color-accent);
-    }
-    .sub {
-      color: var(--color-text-muted);
-      font-size: 0.9rem;
-    }
-    button {
-      padding: 10px 24px;
-      background: var(--color-primary);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    button:hover { opacity: 0.9; }
-  </style>
+  <link rel="stylesheet" href="css/layout.css">
+  <!-- Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
-  <span style="font-size:3rem">💳</span>
-  <p class="welcome" id="welcome-msg">Loading...</p>
-  <p class="sub">CampusWallet is running. Dashboard coming in Phase 2.</p>
-  <button onclick="logout()">Logout</button>
+<div class="app-layout">
 
-  <script>
-    // Check session and display username
-    (async function() {
-      const res  = await fetch('/api/auth/me');
-      const data = await res.json();
-      if (!data.loggedIn) {
-        window.location.href = '/index.html';
-        return;
-      }
-      document.getElementById('welcome-msg').textContent =
-        `Welcome, ${data.fullName} 👋`;
-    })();
+  <!-- ── SIDEBAR ─────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <h2>💳 CampusWallet</h2>
+      <p class="user-name" id="sidebar-username">Loading...</p>
+    </div>
 
-    async function logout() {
-      await fetch('/api/auth/logout', { method: 'POST' });
+    <nav class="nav-section">
+      <p class="nav-label">Main</p>
+
+      <button class="nav-item active" onclick="navigate('dashboard')">
+        <span class="nav-icon">📊</span>
+        Dashboard
+      </button>
+
+      <button class="nav-item" onclick="navigate('expenses')">
+        <span class="nav-icon">💸</span>
+        Expenses
+      </button>
+
+      <button class="nav-item" onclick="navigate('income')">
+        <span class="nav-icon">💰</span>
+        Income
+      </button>
+
+      <p class="nav-label">Planning</p>
+
+      <button class="nav-item" onclick="navigate('budgets')">
+        <span class="nav-icon">🎯</span>
+        Budgets
+      </button>
+
+      <button class="nav-item" onclick="navigate('goals')">
+        <span class="nav-icon">⭐</span>
+        Saving Goals
+      </button>
+
+      <p class="nav-label">Insights</p>
+
+      <button class="nav-item" onclick="navigate('reports')">
+        <span class="nav-icon">📈</span>
+        Reports
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="btn-logout" onclick="logout()">
+        <span class="nav-icon">🚪</span>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ────────────────────────────────────── -->
+  <main class="main-content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle" id="dash-subtitle"></p>
+      </div>
+      <div class="page-body">
+        <div class="cards-grid">
+          <div class="summary-card">
+            <p class="card-label">Income This Month</p>
+            <p class="card-value income" id="dash-income">KES —</p>
+            <p class="card-sub">Money received</p>
+          </div>
+          <div class="summary-card">
+            <p class="card-label">Expenses This Month</p>
+            <p class="card-value expense" id="dash-expense">KES —</p>
+            <p class="card-sub">Money spent</p>
+          </div>
+          <div class="summary-card">
+            <p class="card-label">Net Savings</p>
+            <p class="card-value net" id="dash-net">KES —</p>
+            <p class="card-sub">Income minus expenses</p>
+          </div>
+        </div>
+
+        <div class="chart-container" style="margin-bottom: var(--space-lg)">
+          <p class="chart-title">Spending by Category</p>
+          <canvas id="category-chart" height="160"></canvas>
+        </div>
+
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Recent Transactions</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th style="text-align:right">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="recent-tbody">
+              <tr>
+                <td colspan="4" class="empty-state">
+                  <span class="empty-icon">📋</span>
+                  <p>Loading...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPENSES PAGE (built in Phase 3) -->
+    <div class="page" id="page-expenses">
+      <div class="page-header">
+        <h1 class="page-title">Expenses</h1>
+        <p class="page-subtitle">Record and track your spending</p>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <p style="color: var(--color-text-muted)">
+            Expenses screen — coming next.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- INCOME PAGE (built in Phase 3) -->
+    <div class="page" id="page-income">
+      <div class="page-header">
+        <h1 class="page-title">Income</h1>
+        <p class="page-subtitle">Record money you receive</p>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <p style="color: var(--color-text-muted)">
+            Income screen — coming next.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGETS PAGE (built in Phase 4) -->
+    <div class="page" id="page-budgets">
+      <div class="page-header">
+        <h1 class="page-title">Budgets</h1>
+        <p class="page-subtitle">Set monthly spending limits</p>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <p style="color: var(--color-text-muted)">
+            Budgets screen — coming in Phase 4.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOALS PAGE (built in Phase 5) -->
+    <div class="page" id="page-goals">
+      <div class="page-header">
+        <h1 class="page-title">Saving Goals</h1>
+        <p class="page-subtitle">Track progress toward your targets</p>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <p style="color: var(--color-text-muted)">
+            Saving Goals screen — coming in Phase 5.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS PAGE (built in Phase 6) -->
+    <div class="page" id="page-reports">
+      <div class="page-header">
+        <h1 class="page-title">Reports</h1>
+        <p class="page-subtitle">Understand your financial trends</p>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <p style="color: var(--color-text-muted)">
+            Reports screen — coming in Phase 6.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Scripts — api.js must load before dashboard.js -->
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+
+  // ── NAVIGATION ──────────────────────────────────────────
+  function navigate(page) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p =>
+      p.classList.remove('active'));
+    // Show the target page
+    document.getElementById(`page-${page}`).classList.add('active');
+
+    // Update nav item highlight
+    document.querySelectorAll('.nav-item').forEach(n =>
+      n.classList.remove('active'));
+    document.querySelector(`[onclick="navigate('${page}')"]`)
+      .classList.add('active');
+
+    // Load data for the page being shown
+    if (page === 'dashboard') loadDashboard();
+  }
+
+  // ── LOGOUT ──────────────────────────────────────────────
+  async function logout() {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    window.location.href = '/index.html';
+  }
+
+  // ── SESSION CHECK ON LOAD ────────────────────────────────
+  // If not logged in, kick back to login page immediately.
+  // If logged in, show their name in sidebar and load dashboard.
+  (async function init() {
+    const res  = await fetch('/api/auth/me');
+    const data = await res.json();
+
+    if (!data.loggedIn) {
       window.location.href = '/index.html';
+      return;
     }
-  </script>
+
+    document.getElementById('sidebar-username').textContent =
+      data.fullName;
+
+    loadDashboard();
+  })();
+
+</script>
 </body>
 </html>
