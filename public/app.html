@@ -10,6 +10,16 @@
   <link rel="stylesheet" href="css/components.css">
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+     @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+  </style>
 </head>
 <body>
 <div class="app-layout">
@@ -316,17 +326,30 @@
       </div>
     </div>
 
-    <!-- GOALS PAGE (built in Phase 5) -->
+    <!-- GOALS PAGE -->
     <div class="page" id="page-goals">
       <div class="page-header">
-        <h1 class="page-title">Saving Goals</h1>
-        <p class="page-subtitle">Track progress toward your targets</p>
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Saving Goals</h1>
+            <p class="page-subtitle">
+              Set a target, track progress, reach it
+            </p>
+          </div>
+          <button class="btn-primary"
+                  onclick="openNewGoalModal()"
+                  style="flex-shrink:0">
+            <i class="ti ti-plus" aria-hidden="true"></i>
+            New goal
+          </button>
+        </div>
       </div>
       <div class="page-body">
-        <div class="card">
-          <p style="color: var(--color-text-muted)">
-            Saving Goals screen — coming in Phase 5.
-          </p>
+        <div id="goals-container">
+          <div class="empty-state">
+            <span class="empty-icon">⭐</span>
+            <p>Loading...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -355,6 +378,7 @@
 <script src="js/expenses.js"></script>
 <script src="js/income.js"></script>
 <script src="js/budgets.js"></script>
+<script src="js/goals.js"></script>
 <script>
 
   // ── NAVIGATION ──────────────────────────────────────────
@@ -372,6 +396,7 @@
     if (page === 'expenses')  loadExpenses();
     if (page === 'income')    loadIncome();
     if (page === 'budgets')   loadBudgets();
+    if (page === 'goals')     loadGoals();
   }
   // ── LOGOUT ──────────────────────────────────────────────
   async function logout() {
@@ -418,6 +443,112 @@
       : '<i class="ti ti-sun" aria-hidden="true"></i>';
   }
 
+  function openNewGoalModal() {
+    const existing = document.getElementById('new-goal-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'new-goal-modal';
+    modal.style.cssText = `
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    `;
+
+    modal.innerHTML = `
+      <div style="
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: var(--radius-xl);
+        padding: 32px;
+        width: 100%; max-width: 460px;
+        animation: slideUp 0.25s var(--ease-spring);
+      ">
+        <h3 style="font-size:18px; font-weight:700;
+                   letter-spacing:-0.3px; margin-bottom:6px">
+          New saving goal
+        </h3>
+        <p style="font-size:13px; color:var(--text-2); margin-bottom:24px">
+          What are you saving toward?
+        </p>
+        <div style="display:flex; flex-direction:column; gap:14px">
+          <div class="form-group">
+            <label>Goal name</label>
+            <input type="text" id="new-goal-name"
+                   placeholder="e.g. New laptop, Exam fees, Trip">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+            <div class="form-group">
+              <label>Target amount (KES)</label>
+              <input type="number" id="new-goal-target"
+                     min="1" step="1" placeholder="0">
+            </div>
+            <div class="form-group">
+              <label>Target date (optional)</label>
+              <input type="date" id="new-goal-date">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description (optional)</label>
+            <input type="text" id="new-goal-desc"
+                   placeholder="Any notes about this goal">
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:24px">
+          <button onclick="submitNewGoal()"
+                  class="btn-primary" style="flex:1; justify-content:center">
+            Create goal
+          </button>
+          <button onclick="document.getElementById('new-goal-modal').remove()"
+                  class="btn-secondary">
+            Cancel
+          </button>
+        </div>
+      </div>
+    `;
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.remove();
+    });
+
+    document.body.appendChild(modal);
+    setTimeout(() => document.getElementById('new-goal-name')?.focus(), 100);
+  }
+
+  async function submitNewGoal() {
+    const name   = document.getElementById('new-goal-name')?.value.trim();
+    const target = document.getElementById('new-goal-target')?.value;
+    const date   = document.getElementById('new-goal-date')?.value;
+    const desc   = document.getElementById('new-goal-desc')?.value.trim();
+
+    if (!name) {
+      showToast('Enter a goal name', 'error');
+      return;
+    }
+    if (!target || parseFloat(target) <= 0) {
+      showToast('Enter a valid target amount', 'error');
+      return;
+    }
+
+    try {
+      await api.post('/goals', {
+        name,
+        target_amount: parseFloat(target),
+        target_date:   date || null,
+        description:   desc || null,
+      });
+
+      document.getElementById('new-goal-modal')?.remove();
+      showToast('Goal created ✓');
+      loadGoals();
+
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
 
 
 </script>
