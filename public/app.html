@@ -354,18 +354,86 @@
       </div>
     </div>
 
-    <!-- REPORTS PAGE (built in Phase 6) -->
+    <!-- REPORTS PAGE -->
     <div class="page" id="page-reports">
       <div class="page-header">
-        <h1 class="page-title">Reports</h1>
-        <p class="page-subtitle">Understand your financial trends</p>
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Reports</h1>
+            <p class="page-subtitle" id="report-month-title">
+              Loading...
+            </p>
+          </div>
+          <div id="month-selector"></div>
+        </div>
       </div>
       <div class="page-body">
-        <div class="card">
-          <p style="color: var(--color-text-muted)">
-            Reports screen — coming in Phase 6.
-          </p>
+
+        <!-- Summary row -->
+        <div class="cards-grid" style="margin-bottom:16px">
+          <div class="summary-card income">
+            <div class="card-icon">
+              <i class="ti ti-arrow-down-left" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Income</div>
+            <div class="card-value income" id="report-income">KES —</div>
+          </div>
+          <div class="summary-card expense">
+            <div class="card-icon">
+              <i class="ti ti-arrow-up-right" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Expenses</div>
+            <div class="card-value expense" id="report-expense">KES —</div>
+          </div>
+          <div class="summary-card net">
+            <div class="card-icon">
+              <i class="ti ti-wallet" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Net</div>
+            <div class="card-value net" id="report-net">KES —</div>
+          </div>
         </div>
+
+        <!-- Biggest expense + Trend chart -->
+        <div style="display:grid; grid-template-columns:1fr 1.6fr;
+                    gap:16px; margin-bottom:16px">
+          <div class="card" id="report-biggest">
+            <p style="color:var(--text-3); font-size:13px">
+              Loading...
+            </p>
+          </div>
+          <div class="chart-container" style="margin-bottom:0">
+            <p class="chart-title">6-month trend</p>
+            <canvas id="trend-chart" height="140"></canvas>
+          </div>
+        </div>
+
+        <!-- Category breakdown -->
+        <div class="table-container">
+          <div class="table-header">
+            <h3>Category breakdown</h3>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th style="text-align:right">Actual</th>
+                <th style="text-align:right">Budget</th>
+                <th style="text-align:right">Variance</th>
+                <th style="text-align:right">Transactions</th>
+              </tr>
+            </thead>
+            <tbody id="report-categories-tbody">
+              <tr>
+                <td colspan="5" class="empty-state">
+                  <span class="empty-icon">📊</span>
+                  <p>Loading...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
 
@@ -379,6 +447,7 @@
 <script src="js/income.js"></script>
 <script src="js/budgets.js"></script>
 <script src="js/goals.js"></script>
+<script src="js/reports.js"></script>
 <script>
 
   // ── NAVIGATION ──────────────────────────────────────────
@@ -397,6 +466,7 @@
     if (page === 'income')    loadIncome();
     if (page === 'budgets')   loadBudgets();
     if (page === 'goals')     loadGoals();
+    if (page === 'reports')   loadReports();
   }
   // ── LOGOUT ──────────────────────────────────────────────
   async function logout() {
