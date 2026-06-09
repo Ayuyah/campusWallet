@@ -87,8 +87,27 @@ app.use('/api/reports',  reportRoutes);
 // ── CATCH-ALL ROUTE ───────────────────────────────────────────
 // Any URL that doesn't match a static file or API route
 // gets served index.html. This lets the frontend handle routing.
-app.get('/{*splat}', (req, res) => {
+// Root → landing page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
+// Explicit routes for known HTML pages
+app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/app.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'app.html'));
+});
+
+app.get('/landing.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
+});
+
+// Everything else → landing page
+app.get('/{*splat}', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'landing.html'));
 });
 
 // ── START SERVER ──────────────────────────────────────────────

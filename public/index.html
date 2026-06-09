@@ -3,99 +3,168 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusWallet</title>
+  <title>CampusWallet — Log in</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body class="auth-page">
 
-  <div class="auth-container">
-
-    <div class="auth-logo">
-      <span class="auth-logo-icon">💳</span>
-      <h1>CampusWallet</h1>
-      <p>Your campus finance tracker</p>
-    </div>
-
-    <!-- TAB SWITCHER -->
-    <div class="auth-tabs">
-      <button class="tab-btn active" id="tab-login"
-              onclick="showTab('login')">Login</button>
-      <button class="tab-btn" id="tab-register"
-              onclick="showTab('register')">Register</button>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <form class="auth-form active" id="form-login"
-          onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label for="login-username">Username or Email</label>
-        <input type="text" id="login-username"
-               placeholder="Enter your username or email" required>
+  <!-- LEFT — branding panel -->
+  <div class="auth-left">
+    <div class="auth-left-glow" aria-hidden="true"></div>
+    <a href="/landing.html" class="auth-left-logo">
+      <div class="auth-left-logo-icon">
+        <i class="ti ti-credit-card" aria-hidden="true"></i>
       </div>
-      <div class="form-group">
-        <label for="login-password">Password</label>
-        <input type="password" id="login-password"
-               placeholder="Enter your password" required>
-      </div>
-      <p class="form-error" id="login-error"></p>
-      <button type="submit" class="btn-primary" id="login-btn">
-        Login
-      </button>
-    </form>
+      <span class="auth-left-logo-name">CampusWallet</span>
+    </a>
 
-    <!-- REGISTER FORM -->
-    <form class="auth-form" id="form-register"
-          onsubmit="handleRegister(event)">
-      <div class="form-group">
-        <label for="reg-name">Full Name</label>
-        <input type="text" id="reg-name"
-               placeholder="Your full name" required>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="reg-username">Username</label>
-          <input type="text" id="reg-username"
-                 placeholder="Choose a username" required>
+    <div class="auth-left-content">
+      <h1 class="auth-left-title">
+        Smart money for<br>campus life
+      </h1>
+      <p class="auth-left-sub">
+        Track your spending, stick to your budget,
+        and save toward your goals — built for
+        Kenyan students.
+      </p>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">
+            <i class="ti ti-arrows-exchange" aria-hidden="true"></i>
+          </div>
+          <div class="auth-feature-text">
+            <strong>Track every transaction</strong> — HELB, M-Pesa, cash
+          </div>
         </div>
-        <div class="form-group">
-          <label for="reg-year">Year of Study</label>
-          <select id="reg-year">
-            <option value="1">Year 1</option>
-            <option value="2">Year 2</option>
-            <option value="3" selected>Year 3</option>
-            <option value="4">Year 4</option>
-          </select>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">
+            <i class="ti ti-target" aria-hidden="true"></i>
+          </div>
+          <div class="auth-feature-text">
+            <strong>Monthly budgets</strong> — get warned before you overspend
+          </div>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">
+            <i class="ti ti-star" aria-hidden="true"></i>
+          </div>
+          <div class="auth-feature-text">
+            <strong>Saving goals</strong> — laptop, fees, or anything else
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="reg-email">Email</label>
-        <input type="email" id="reg-email"
-               placeholder="your@email.com" required>
-      </div>
-      <div class="form-group">
-        <label for="reg-password">Password</label>
-        <input type="password" id="reg-password"
-               placeholder="At least 6 characters" required>
-      </div>
-      <div class="form-group">
-        <label for="reg-university">University</label>
-        <input type="text" id="reg-university"
-               placeholder="e.g. Egerton University">
-      </div>
-      <div class="form-group">
-        <label for="reg-course">Course</label>
-        <input type="text" id="reg-course"
-               placeholder="e.g. BSc Computer Science">
-      </div>
-      <p class="form-error" id="reg-error"></p>
-      <button type="submit" class="btn-primary" id="reg-btn">
-        Create Account
-      </button>
-    </form>
+    </div>
 
+    <p class="auth-left-footer">
+      © 2026 CampusWallet. Free forever for students.
+    </p>
+  </div>
+
+  <!-- RIGHT — the form -->
+  <div class="auth-right">
+    <div class="auth-form-container">
+
+      <div id="view-login">
+        <h2 class="auth-form-title">Welcome back</h2>
+        <p class="auth-form-sub">
+          Log in to your account to continue
+        </p>
+        <div class="auth-tabs">
+          <button class="tab-btn active" onclick="showTab('login')">
+            Log in
+          </button>
+          <button class="tab-btn" onclick="showTab('register')">
+            Create account
+          </button>
+        </div>
+
+        <!-- LOGIN -->
+        <form class="auth-form active" id="form-login"
+              onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-username">Username or email</label>
+            <input type="text" id="login-username"
+                   placeholder="Enter your username or email"
+                   autocomplete="username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password"
+                   placeholder="Enter your password"
+                   autocomplete="current-password" required>
+          </div>
+          <p class="form-error" id="login-error"></p>
+          <button type="submit" class="btn-primary" id="login-btn">
+            Log in
+          </button>
+        </form>
+
+        <!-- REGISTER -->
+        <form class="auth-form" id="form-register"
+              onsubmit="handleRegister(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-name">Full name</label>
+              <input type="text" id="reg-name"
+                     placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="reg-username">Username</label>
+              <input type="text" id="reg-username"
+                     placeholder="Choose a username" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-email">Email</label>
+            <input type="email" id="reg-email"
+                   placeholder="your@email.com"
+                   autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password"
+                   placeholder="At least 6 characters"
+                   autocomplete="new-password" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reg-university">University</label>
+              <input type="text" id="reg-university"
+                     placeholder="e.g. Egerton">
+            </div>
+            <div class="form-group">
+              <label for="reg-year">Year</label>
+              <select id="reg-year">
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3" selected>Year 3</option>
+                <option value="4">Year 4</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="reg-course">Course</label>
+            <input type="text" id="reg-course"
+                   placeholder="e.g. BSc Computer Science">
+          </div>
+          <p class="form-error" id="reg-error"></p>
+          <button type="submit" class="btn-primary" id="reg-btn">
+            Create account
+          </button>
+        </form>
+      </div>
+
+    </div>
   </div>
 
   <script src="js/auth.js"></script>
+  <script>
+    // Check for #register hash in URL — used by landing page CTAs
+    if (window.location.hash === '#register') {
+      showTab('register');
+    }
+  </script>
 </body>
 </html>

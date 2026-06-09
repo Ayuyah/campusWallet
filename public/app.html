@@ -6,6 +6,8 @@
   <title>CampusWallet</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <link rel="stylesheet" href="css/components.css">
   <!-- Chart.js from CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -15,52 +17,55 @@
   <!-- ── SIDEBAR ─────────────────────────────────────────── -->
   <aside class="sidebar">
     <div class="sidebar-logo">
-      <h2>💳 CampusWallet</h2>
-      <p class="user-name" id="sidebar-username">Loading...</p>
+      <div class="sidebar-logo-icon">
+        <i class="ti ti-credit-card" aria-hidden="true"></i>
+      </div>
+      <span class="sidebar-logo-name">CampusWallet</span>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" id="sidebar-initials">--</div>
+      <span class="sidebar-username" id="sidebar-username">Loading...</span>
     </div>
 
     <nav class="nav-section">
-      <p class="nav-label">Main</p>
-
+      <p class="nav-group-label">Main</p>
       <button class="nav-item active" onclick="navigate('dashboard')">
-        <span class="nav-icon">📊</span>
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
         Dashboard
       </button>
-
       <button class="nav-item" onclick="navigate('expenses')">
-        <span class="nav-icon">💸</span>
+        <i class="ti ti-arrow-up-right" aria-hidden="true"></i>
         Expenses
       </button>
-
       <button class="nav-item" onclick="navigate('income')">
-        <span class="nav-icon">💰</span>
+        <i class="ti ti-arrow-down-left" aria-hidden="true"></i>
         Income
       </button>
-
-      <p class="nav-label">Planning</p>
-
+      <p class="nav-group-label">Planning</p>
       <button class="nav-item" onclick="navigate('budgets')">
-        <span class="nav-icon">🎯</span>
+        <i class="ti ti-target" aria-hidden="true"></i>
         Budgets
       </button>
-
       <button class="nav-item" onclick="navigate('goals')">
-        <span class="nav-icon">⭐</span>
+        <i class="ti ti-star" aria-hidden="true"></i>
         Saving Goals
       </button>
-
-      <p class="nav-label">Insights</p>
-
+      <p class="nav-group-label">Insights</p>
       <button class="nav-item" onclick="navigate('reports')">
-        <span class="nav-icon">📈</span>
+        <i class="ti ti-chart-bar" aria-hidden="true"></i>
         Reports
       </button>
     </nav>
 
     <div class="sidebar-bottom">
       <button class="btn-logout" onclick="logout()">
-        <span class="nav-icon">🚪</span>
+        <i class="ti ti-logout" aria-hidden="true"></i>
         Logout
+      </button>
+      <button class="btn-theme" onclick="toggleTheme()"
+              id="theme-btn" title="Toggle light/dark">
+        <i class="ti ti-moon" aria-hidden="true"></i>
       </button>
     </div>
   </aside>
@@ -76,20 +81,29 @@
       </div>
       <div class="page-body">
         <div class="cards-grid">
-          <div class="summary-card">
-            <p class="card-label">Income This Month</p>
-            <p class="card-value income" id="dash-income">KES —</p>
-            <p class="card-sub">Money received</p>
+          <div class="summary-card income">
+            <div class="card-icon">
+              <i class="ti ti-arrow-down-left" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Income this month</div>
+            <div class="card-value income" id="dash-income">KES —</div>
+            <div class="card-sub">Money received</div>
           </div>
-          <div class="summary-card">
-            <p class="card-label">Expenses This Month</p>
-            <p class="card-value expense" id="dash-expense">KES —</p>
-            <p class="card-sub">Money spent</p>
+          <div class="summary-card expense">
+            <div class="card-icon">
+              <i class="ti ti-arrow-up-right" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Expenses this month</div>
+            <div class="card-value expense" id="dash-expense">KES —</div>
+            <div class="card-sub">Money spent</div>
           </div>
-          <div class="summary-card">
-            <p class="card-label">Net Savings</p>
-            <p class="card-value net" id="dash-net">KES —</p>
-            <p class="card-sub">Income minus expenses</p>
+          <div class="summary-card net">
+            <div class="card-icon">
+              <i class="ti ti-wallet" aria-hidden="true"></i>
+            </div>
+            <div class="card-label">Net savings</div>
+            <div class="card-value net" id="dash-net">KES —</div>
+            <div class="card-sub">Income minus expenses</div>
           </div>
         </div>
 
@@ -283,17 +297,21 @@
       </div>
     </div>
 
-    <!-- BUDGETS PAGE (built in Phase 4) -->
+   <!-- BUDGETS PAGE -->
     <div class="page" id="page-budgets">
       <div class="page-header">
         <h1 class="page-title">Budgets</h1>
-        <p class="page-subtitle">Set monthly spending limits</p>
+        <p class="page-subtitle">
+          Set monthly spending limits per category.
+          Click any amount to edit it.
+        </p>
       </div>
       <div class="page-body">
-        <div class="card">
-          <p style="color: var(--color-text-muted)">
-            Budgets screen — coming in Phase 4.
-          </p>
+        <div id="budgets-container">
+          <div class="empty-state">
+            <span class="empty-icon">🎯</span>
+            <p>Loading...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -336,10 +354,11 @@
 <script src="js/dashboard.js"></script>
 <script src="js/expenses.js"></script>
 <script src="js/income.js"></script>
+<script src="js/budgets.js"></script>
 <script>
 
   // ── NAVIGATION ──────────────────────────────────────────
-  function navigate(page) {
+    function navigate(page) {
     document.querySelectorAll('.page').forEach(p =>
       p.classList.remove('active'));
     document.getElementById(`page-${page}`).classList.add('active');
@@ -352,6 +371,7 @@
     if (page === 'dashboard') loadDashboard();
     if (page === 'expenses')  loadExpenses();
     if (page === 'income')    loadIncome();
+    if (page === 'budgets')   loadBudgets();
   }
   // ── LOGOUT ──────────────────────────────────────────────
   async function logout() {
@@ -371,16 +391,34 @@
       return;
     }
 
-    document.getElementById('sidebar-username').textContent =
-      data.fullName;
+    document.getElementById('sidebar-username').textContent = data.fullName;
 
-    // Set today as default date on both forms
+    // Generate initials from full name
+    const initials = data.fullName
+      .split(' ')
+      .map(n => n[0])
+      .slice(0, 2)
+      .join('')
+      .toUpperCase();
+    document.getElementById('sidebar-initials').textContent = initials;
+
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('exp-date').value = today;
     document.getElementById('inc-date').value = today;
 
     loadDashboard();
   })();
+  // ── THEME TOGGLE ─────────────────────────────────────────
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    const btn = document.getElementById('theme-btn');
+    const isLight = document.body.classList.contains('light');
+    btn.innerHTML = isLight
+      ? '<i class="ti ti-moon" aria-hidden="true"></i>'
+      : '<i class="ti ti-sun" aria-hidden="true"></i>';
+  }
+
+
 
 </script>
 </body>
