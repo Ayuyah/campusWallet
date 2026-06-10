@@ -26,7 +26,7 @@
       text-decoration: none;
     }
     .nav-logo-icon {
-      width: 36px; height: 36px; background: var(--brand);
+      width: 86px; height: 76px; background: var(--brand);
       border-radius: 10px; display: flex; align-items: center;
       justify-content: center;
     }
@@ -329,21 +329,18 @@
 
   <!-- NAV -->
   <nav class="nav" id="navbar">
-    <a href="/" class="nav-logo">
-      <div class="nav-logo-icon">
-        <i class="ti ti-credit-card" aria-hidden="true"></i>
-      </div>
-      <span class="nav-logo-name">CampusWallet</span>
+    <a href="/public/index.html" class="nav-logo">
+      <img src="assets/images/logo-full.png" alt="CampusWallet" style="height:42px; width:auto; display:block">
     </a>
     <div class="nav-links">
       <a href="#features" class="nav-link">Features</a>
       <a href="#stats" class="nav-link">Why us</a>
     </div>
     <div class="nav-actions">
-      <button class="btn-nav-login" onclick="window.location.href='/index.html'">
+      <button class="btn-nav-login" onclick="window.location.href='/public/index.html'">
         Log in
       </button>
-      <button class="btn-nav-signup" onclick="window.location.href='/index.html#register'">
+      <button class="btn-nav-signup" onclick="window.location.href='/public/index.html#register'">
         Get started
       </button>
     </div>
@@ -369,12 +366,12 @@
         </p>
         <div class="hero-actions">
           <button class="btn-hero-primary"
-                  onclick="window.location.href='/index.html#register'">
+                  onclick="window.location.href='/public/index.html#register'">
             <i class="ti ti-arrow-right" aria-hidden="true"></i>
             Create free account
           </button>
           <button class="btn-hero-secondary"
-                  onclick="window.location.href='/index.html'">
+                  onclick="window.location.href='/public/index.html'">
             Log in
           </button>
         </div>
@@ -522,7 +519,7 @@
         No payment required — ever.
       </p>
       <button class="btn-hero-primary"
-              onclick="window.location.href='/index.html#register'"
+              onclick="window.location.href='/public/index.html#register'"
               style="margin:0 auto">
         <i class="ti ti-arrow-right" aria-hidden="true"></i>
         Create free account
@@ -532,10 +529,13 @@
 
   <!-- FOOTER -->
   <footer class="footer">
-    <p class="footer-copy">© 2026 CampusWallet. Built for campus students.</p>
+    <div style="display:flex; align-items:center; gap:12px">
+      <img src="assets/images/logo-mark.png" alt="CampusWallet" height="40" style="display:block; opacity:0.7; gap:12px;">
+      <p class="footer-copy">CampusWallet 2024. All rights reserved.</p>
+    </div>
     <div class="footer-links">
-      <a href="/index.html" class="footer-link">Log in</a>
-      <a href="/index.html#register" class="footer-link">Sign up</a>
+      <a href="/public/index.html" class="footer-link">Log in</a>
+      <a href="/public/index.html#register" class="footer-link">Sign up</a>
     </div>
   </footer>
 
